@@ -1,0 +1,300 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage[onehalfspacing]{setspace}
+\usepackage[ngerman]{babel} 
+\usepackage{csquotes}
+\usepackage[backend=biber, style=alphabetic, citestyle=alphabetic-verb]{biblatex}
+\usepackage{graphicx}
+\usepackage{helvet}
+\usepackage[eulergreek]{sansmath}
+\usepackage[parfill]{parskip}
+\usepackage{enumitem} 
+\usepackage{changepage}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[nottoc]{tocbibind}
+\usepackage{float}
+\usepackage{chngcntr}
+\usepackage[titles]{tocloft}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage[expansion, final]{microtype}
+\usepackage{titlesec}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage[labelfont={footnotesize, bf}, textfont={footnotesize, bf}]{caption}
+\usepackage[labelfont={footnotesize}, textfont={footnotesize}]{subcaption}
+\usepackage{rotating}
+\usepackage[table, xcolor=dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{lastpage} 
+\usepackage{amsmath}
+\usepackage{pgfplots}
+\usepackage{enumitem}
+\usepackage{hhline}
+\usepackage{colortbl}
+\usepackage{booktabs}
+
+\captionsetup[figure]{% use subfigure to confine changes to subcaptions
+  justification = RaggedRight, 
+  format=hang}
+
+\pgfplotsset{
+  tick label style = {font=\sansmath\sffamily},
+  every axis label = {font=\sansmath\sffamily},
+  legend style = {font=\sansmath\sffamily},
+  label style = {font=\sansmath\sffamily},
+  compat=1.15
+}
+
+\definecolor{standardblue}{RGB}{91,155,213}
+\definecolor{darkblue}{RGB}{47,86,122}
+\definecolor{standardred}{RGB}{214,92,92}
+\definecolor{darkred}{RGB}{132,58,58}
+
+%configuration of figure numbering and table of figures
+\counterwithin{figure}{section}
+\setlength{\cftfigindent}{0pt}
+\newlength{\figlen}
+
+\renewcommand{\cftfigpresnum}{\figurename\enspace}
+\settowidth{\figlen}{\cftfigpresnum\cftfigaftersnum}
+\addtolength{\cftfignumwidth}{2\figlen}
+
+%configuration of table numbering and table of tables
+\counterwithin{table}{section}
+\setlength{\cfttabindent}{0pt}
+
+\renewcommand{\cfttabpresnum}{\tablename\enspace}
+\settowidth{\figlen}{\cfttabpresnum\cfttabaftersnum}
+\addtolength{\cfttabnumwidth}{2.3\figlen}
+
+% make paragraph to fourth section
+\titleformat{\paragraph}[hang]{\normalfont\normalsize\bfseries}{\theparagraph}{0em}{}
+\titlespacing*{\paragraph}{0pt}{3.25ex plus 1ex minus .2ex}{0.5em}
+
+\setcounter{biburllcpenalty}{9000}
+\setcounter{biburlucpenalty}{9000}
+
+\geometry{a4paper, left=25mm, right=15mm, top=25mm, bottom=15mm}
+
+%configure font%
+\renewcommand{\familydefault}{\sfdefault}
+
+%configure header%
+\geometry{headheight=16pt}
+\pagestyle{fancy}
+\fancypagestyle{default}{
+	\fancyhf{}
+	\fancyhead[L]{\nouppercase{\leftmark}}
+	\fancyhead[R]{Seite \thepage{} von \pageref{page:last}}
+}
+
+\fancypagestyle{table}{
+	\fancyhf{}
+	\fancyhead[L]{\nouppercase{Verzeichnisse}}
+	\fancyhead[R]{Seite \thepage{} von \pageref{page:last}}
+}
+
+\fancypagestyle{toc}{
+	\fancyhf{}
+	\fancyhead[L]{\nouppercase{Inhaltsverzeichnis}}
+}
+
+\fancypagestyle{self}{
+	\fancyhf{}
+	\fancyhead[L]{\nouppercase{Selbstständigkeitserklärung}}
+}
+
+\fancypagestyle{tof}{
+	\fancyhf{}
+	\fancyhead[L]{\nouppercase{Abbildungsverzeichnis}}
+	\fancyhead[R]{II}
+}
+
+\pagestyle{default}
+
+\interfootnotelinepenalty=10000
+
+%configuration of references%
+\bibliography{bibliography}
+\DeclareBibliographyCategory{cited}
+\AtEveryCitekey{\addtocategory{cited}{\thefield{entrykey}}}
+
+\defbibenvironment{notcited}
+  {\list
+     {}
+     {\setlength{\leftmargin}{0pt}%
+      \setlength{\itemindent}{-\leftmargin}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}}}
+  {\endlist}
+  {\item}
+
+
+%configure listing%
+\renewcommand\lstlistingname{Quelltext}
+\renewcommand{\lstlistlistingname}{Quelltextverzeichnis}
+
+\AtBeginDocument{
+  \counterwithin{lstlisting}{section}%
+}
+
+\makeatletter
+\renewcommand{\l@lstlisting}[2]{%
+  \@dottedtocline{1}{0em}{4,5em}{\lstlistingname\ #1}{#2}%
+}
+\makeatother
+ 
+
+%configure equations
+\newcommand{\listequationsname}{Gleichungsverzeichnis}
+\newlistof{equations}{loe}{\listequationsname}
+\newcommand{\equations}[1]{%
+	\addcontentsline{loe}{equations}{\protect Gleichung \numberline{\theequation}#1}\par}
+
+\makeatletter
+     \renewcommand*\l@equations{\@dottedtocline{1}{0em}{4em}}
+\makeatother
+
+\renewcommand{\cftafterloetitle}{\parindent}
+
+\counterwithin{equation}{section}
+
+% Adjust spacing of equations
+\makeatletter
+\g@addto@macro\normalsize{%
+  \setlength\abovedisplayskip{-5pt}
+  \setlength\belowdisplayskip{0pt}
+  \setlength\abovedisplayshortskip{-5pt}
+  \setlength\belowdisplayshortskip{0pt}
+}
+\makeatother
+
+%configure appendix%
+\newcommand{\listappendicesname}{Anhangsverzeichnis}
+\newlistof{appendices}{loa}{\listappendicesname}
+\newcommand{\appendices}[1]{\newpage\subsection{#1}
+	\refstepcounter{appendices}%
+  \addcontentsline{loa}{appendices}
+    {\protect Anhang \numberline{\theappendices} #1}\par%
+}
+\renewcommand{\theappendices}{\Alph{appendices}}
+
+\makeatletter
+\newcounter{savesection}
+\newcounter{apdxsection}
+\renewcommand\appendix{\par
+  \setcounter{savesection}{\value{section}}%
+  \setcounter{section}{\value{apdxsection}}%
+  \setcounter{subsection}{0}%
+  \gdef\thesection{\@Alph\c@section}}
+\newcommand\unappendix{\par
+  \setcounter{apdxsection}{\value{section}}%
+  \setcounter{section}{\value{savesection}}%
+  \setcounter{subsection}{0}%
+  \gdef\thesection{\@arabic\c@section}}
+\makeatother
+
+% exclude fields from bibliography
+\AtEveryBibitem{%
+    \ifentrytype{article}{
+        \clearfield{pages}%
+        \clearfield{doi}%
+        \clearfield{issn}%
+        \clearfield{eprint}%
+        \clearfield{volume}%
+        \clearfield{note}%
+        \clearfield{url}%
+        \clearfield{archivePrefix}%%
+    }{}
+    \ifentrytype{misc}{
+        \clearfield{pages}%
+        \clearfield{doi}%
+        \clearfield{issn}%
+        \clearfield{eprint}%
+        \clearfield{volume}%
+        \clearfield{note}%
+        \clearfield{url}%
+        \clearfield{archivePrefix}%%
+    }{}
+}
+
+% style fields in bibliography
+\DeclareFieldFormat[misc]{title}{\glqq#1\grqq}
+\DeclareFieldFormat[misc]{date}{(#1)}
+
+\renewcommand{\cftafterloatitle}{\parindent}
+
+\title{Fashion Feature Annotation}
+\date{\today}
+\author{Jerome Wuerf und Eric Mäuer}
+
+%-------------------------------------------------------------------------------
+
+\begin{document}
+
+\makeatletter
+\begin{titlepage}
+\centering	
+
+\vspace*{2cm}
+Universität Leipzig\\
+Fakultät für Mathematik und Informatik\\
+Institut für Informatik\\
+Abteilung Datenbanken
+
+\vspace*{2cm}
+{\Large\bfseries \@title \par}
+
+\vspace*{3cm}
+Konzeptioneller Programmentwurf\\
+für das Big Data Praktikum \\
+in der Studienrichtung M. Sc. Data Science
+
+\flushleft
+\vspace*{3cm}
+
+\begin{tabular}{p{4cm} p{7cm}}
+Eingereicht von: & \@author\\
+& Studiengang M. Sc. Data Science
+\end{tabular}
+
+\vspace*{1cm}
+\begin{tabular}{p{4cm} p{6cm}}
+Betreuer: & Moritz Wilke\\
+& ScaDS Leipzig
+\end{tabular}
+
+\vfill
+\@date, Leipzig
+\end{titlepage}
+\makeatother
+
+\newpage
+
+\pagestyle{toc}
+
+\setcounter{page}{2}
+
+%\tableofcontents
+%\newpage
+%\setcounter{page}{1}
+
+
+%\newpage
+\pagestyle{default}
+
+\input{01_introduction.tex}
+\input{02_introduction_image_processing.tex}
+\input{04_conclusion.tex}
+
+\pagestyle{table}
+
+%\section*{Literaturverzeichnis}
+%\printbibliography[heading=none, category=cited]
+\label{page:last}
+\end{document}
