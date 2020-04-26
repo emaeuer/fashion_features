@@ -12,3 +12,4 @@ class Config(object):
     DATA_DIR = Path(basedir, os.environ.get('DATA_DIR') or 'data')
     IMG_WIDTH = os.environ.get('IMG_Width') or 256
     IMG_HEIGHT = os.environ.get('IMG_HEIGHT') or 256
+    BATCH_SIZE = os.environ.get('BATCH_SIZE') or 32

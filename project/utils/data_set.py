@@ -8,7 +8,6 @@ import numpy as np
 from pathlib import Path
 
 AUTOTUNE = tf.data.experimental.AUTOTUNE
-BATCH_SIZE = 32
 
 
 class DataSet(object):

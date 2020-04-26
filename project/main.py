@@ -1,4 +1,5 @@
 from utils.data_set import DataSet
+from config import Config
 import time
 
 default_timeit_steps = 1000
@@ -17,7 +18,7 @@ def timeit(ds, steps=default_timeit_steps):
 
     duration = end - start
     print("{} batches: {} s".format(steps, duration))
-    print("{:0.5f} Images/s".format(BATCH_SIZE * steps / duration))
+    print("{:0.5f} Images/s".format(Config.BATCH_SIZE * steps / duration))
 
 
 if __name__ == '__main__':
