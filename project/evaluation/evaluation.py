@@ -18,19 +18,17 @@ def evaluate_data(data_frame, category_name):
     """Create a plot for the column of a data frame"""
     series = data_frame[category_name]
     counts_of_groups = series.value_counts()
-    counts_of_groups.plot.bar(y="count", rot=0)
-    counts_of_groups.plot.bar(y="count", rot=0)
+    counts_of_groups.plot.bar(y="count", rot=0, figsize=(10, 10))
     plt.savefig(f"project/evaluation/results/{category_name}.png")
     plt.close()
 
 # read csv
 with open("styles.csv") as file:
-    df = pd.read_csv(file, usecols=[0, 1, 4, 5])
+    df = pd.read_csv(file, usecols=[0, 1, 4, 5, 6, 8])
 
     df.gender = df.gender.map(read_mapping_file("project/evaluation/mappings/gender_mapping.txt"))
     df.baseColour = df.baseColour.map(read_mapping_file("project/evaluation/mappings/color_mapping.txt"))
-    # TODO create mappings for articleType
-    # df.articleType = df.articleType.map(read_mapping_file("project/evaluation/mappings/article_mapping.txt"))
+    df.articleType = df.articleType.map(read_mapping_file("project/evaluation/mappings/article_mapping.txt"))
 
     # remove lines which contain empty values
     df = df.dropna()
@@ -39,4 +37,6 @@ with open("styles.csv") as file:
 
     evaluate_data(df, "gender")
     evaluate_data(df, "baseColour")
-    # TODO evaluate_data(df, "articleType")
+    evaluate_data(df, "articleType")
+    evaluate_data(df, "season")
+    evaluate_data(df, "usage")

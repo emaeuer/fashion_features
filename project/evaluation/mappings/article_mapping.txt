@@ -1,0 +1,16 @@
+Tshirts:Tshirts,Lounge Tshirts
+Shirts:Shirts
+Shoes:Casual Shoes,Sports Shoes,Heels,Flip Flops,Sandals,Formal Shoes,Flats,Sports Sandals,Booties
+:Watches,Handbags,Sunglasses,Wallets,Belts,Backpacks,Perfume and Body Mist,Earrings,Deodorant,Nail Polish,Lipstick,Clutches,Caps,Ties,Pendant,Necklace and Chains,Lip Gloss,Trunk,Scarves,Ring,Accessory Gift Set,Cufflinks,Kajal and Eyeliner,Free Gifts,Stoles,Duffel Bag,Bangle,Laptop Bag,Foundation and Primer,Bracelet,Lounge Pants,Face Moisturisers,Jewellery Set,Fragrance Gift Set,Highlighter and Blush,Compact,Lip Liner,Mobile Pouch,Messenger Bag,Eyeshadow,Suspenders,Mufflers,Face Wash and Cleanser,Sunscreen,Shoe Accessories,Gloves,Hair Colour,Waist Pouch,Baby Dolls,Travel Accessory,Lip Care,Basketballs,Mascara,Mask and Peel,Water Bottle,Concealer,Rucksacks,Footballs,Dupatta,Headband,Wristbands,Shrug,Eye Cream,Nail Essentials,Body Lotion,Umbrellas,Face Scrub and Exfoliator,Toner,Beauty Accessory,Makeup Remover,Lip Plumper,Trolley Bag,Tablet Sleeve,Hat,Ties and Cufflinks,Key chain,Face Serum and Gel,Shoe Laces,Hair Accessory,Cushion Covers,Mens Grooming Kit,Body Wash and Scrub,Ipad,Suits,Clothing Set,Tracksuits,Night suits,Swimwear,Bath Robe,Waistcoat
+Kurtas:Kurtas
+Tops:Tops,Camisoles,Innerwear Vests
+Socks:Socks,Stockings
+Pants:Jeans,Trousers,Track Pants,Leggings,Capris,Jeggings,Rain Trousers,Tights
+Shorts:Shorts,Lounge Shorts
+Bra:Bra
+Dresses:Dresses,Sarees,Kurtis,Kurta Sets,Salwar,Churidar,Patiala,Robe,Lehenga Choli,Nightdress,Tunics
+Briefs:Briefs,Boxers
+Sweater:Sweatshirts,Sweaters
+Jackets:Jackets,Rain Jacket,Blazers,Nehru Jackets
+Skirts:Skirts
+Jumpsuit:Jumpsuit,Rompers
