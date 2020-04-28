@@ -1,0 +1,11 @@
+Black:Black,Charcoal
+White:White,Cream,Off White,Skin,Nude
+Blue:Blue,Navy Blue,Turquoise Blue
+Brown:Brown,Maroon,Coffee Brown,Mushroom Brown,Taupe,khaki,Tan
+Grey:Grey,Grey Melange,Metallic,Steel,Silver
+Red:Red,Burgundy
+Green:Green,Olive,Teal,Sea Green,Lime Green,Fluorescent Green
+Pink:Pink,Peach,Magenta,Rose
+Purple:Purple,Lavender,Mauve
+Yellow:Yellow,Beige,Gold,Mustard
+Orange:Orange,Bronze,Copper,Rust
