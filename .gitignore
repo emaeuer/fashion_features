@@ -433,5 +433,7 @@ cython_debug/
 
 # custom ignores
 .vscode/
-data/
+project/data/*
+!project/data/mappings.yaml
 *.zip
+project/results
