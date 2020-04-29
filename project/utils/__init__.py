@@ -1,1 +1,1 @@
-from utils import data_set
+from utils.dataset import DataSet

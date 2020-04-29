@@ -1,0 +1,103 @@
+articleType:
+  Blazers: Jackets
+  Booties: Shoes
+  Boxers: Briefs
+  Bra: Bra
+  Briefs: Briefs
+  Camisoles: Tops
+  Capris: Pants
+  Casual Shoes: Shoes
+  Churidar: Dresses
+  Dresses: Dresses
+  Flats: Shoes
+  Flip Flops: Shoes
+  Formal Shoes: Shoes
+  Heels: Shoes
+  Innerwear Vests: Tops
+  Jackets: Jackets
+  Jeans: Pants
+  Jeggings: Pants
+  Jumpsuit: Jumpsuit
+  Kurta Sets: Dresses
+  Kurtas: Kurtas
+  Kurtis: Dresses
+  Leggings: Pants
+  Lehenga Choli: Dresses
+  Lounge Shorts: Shorts
+  Lounge Tshirts: Tshirts
+  Nehru Jackets: Jackets
+  Nightdress: Dresses
+  Patiala: Dresses
+  Rain Jacket: Jackets
+  Rain Trousers: Pants
+  Robe: Dresses
+  Rompers: Jumpsuit
+  Salwar: Dresses
+  Sandals: Shoes
+  Sarees: Dresses
+  Shirts: Shirts
+  Shorts: Shorts
+  Skirts: Skirts
+  Socks: Socks
+  Sports Sandals: Shoes
+  Sports Shoes: Shoes
+  Stockings: Socks
+  Sweaters: Sweater
+  Sweatshirts: Sweater
+  Tights: Pants
+  Tops: Tops
+  Track Pants: Pants
+  Trousers: Pants
+  Tshirts: Tshirts
+  Tunics: Dresses
+baseColour:
+  Beige: Yellow
+  Black: Black
+  Blue: Blue
+  Bronze: Orange
+  Brown: Brown
+  Burgundy: Red
+  Charcoal: Black
+  Coffee Brown: Brown
+  Copper: Orange
+  Cream: White
+  Fluorescent Green: Green
+  Gold: Yellow
+  Green: Green
+  Grey: Grey
+  Grey Melange: Grey
+  Lavender: Purple
+  Lime Green: Green
+  Magenta: Pink
+  Maroon: Brown
+  Mauve: Purple
+  Metallic: Grey
+  Mushroom Brown: Brown
+  Mustard: Yellow
+  Navy Blue: Blue
+  Nude: White
+  Off White: White
+  Olive: Green
+  Orange: Orange
+  Peach: Pink
+  Pink: Pink
+  Purple: Purple
+  Red: Red
+  Rose: Pink
+  Rust: Orange
+  Sea Green: Green
+  Silver: Grey
+  Skin: White
+  Steel: Grey
+  Tan: Brown
+  Taupe: Brown
+  Teal: Green
+  Turquoise Blue: Blue
+  White: White
+  Yellow: Yellow
+  khaki: Brown
+gender:
+  Boys: Men
+  Girls: Women
+  Men: Men
+  Women: Women

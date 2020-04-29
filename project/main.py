@@ -1,6 +1,8 @@
-from utils.data_set import DataSet
-from config import Config
 import time
+
+from utils import DataSet
+from config import Config
+from evaluation import Evaluation
 
 default_timeit_steps = 1000
 
@@ -10,7 +12,7 @@ def timeit(ds, steps=default_timeit_steps):
     start = time.time()
     it = iter(ds)
     for i in range(steps):
-        batch = next(it)
+        next(it)
         if i % 10 == 0:
             print(i, end='')
     print()
@@ -22,5 +24,10 @@ def timeit(ds, steps=default_timeit_steps):
 
 
 if __name__ == '__main__':
-    ds = DataSet(small=True).create()
-    timeit(ds)
+    # ds = DataSet().create()
+    # for elem in ds.ds.take(1):
+    #     print(elem)
+
+    # timeit(ds.ds)
+
+    Evaluation()
