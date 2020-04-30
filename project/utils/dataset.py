@@ -4,6 +4,7 @@ import yaml
 import tensorflow as tf
 from pathlib import Path
 import pandas as pd
+import numpy as np
 
 from config import Config
 
@@ -39,7 +40,7 @@ class DataSet(object):
         return df.dropna()
 
     def _read_labels(self):
-        # Returns labels as a endcode dataframe. Labels are indexed by their 
+        # Returns labels as a endcode dataframe. Labels are indexed by their
         # ids
         df = DataSet.load_styles_data_frame()
         df = DataSet.remap_labels(df)
@@ -77,40 +78,34 @@ class DataSet(object):
         img = self._decode_img(img)
         return img, label
 
-    def _prepare_for_training(self, shuffle_buffer_size=1000):
-        for data_set in self.ds.items():
-            # Use a cache dir for the normal sized dataset
-            self.ds[data_set[0]] = data_set[1].cache(str(Path(self.data_dir, 'cache')))
-            self.ds[data_set[0]] = data_set[1].shuffle(buffer_size=shuffle_buffer_size)
-            # Repeat forever
-            self.ds[data_set[0]] = data_set[1].repeat()
-            self.ds[data_set[0]] = data_set[1].batch(Config.BATCH_SIZE)
-            # `prefetch` lets the dataset fetch batches in the background while the
-            # model is training.
-            self.ds[data_set[0]] = data_set[1].prefetch(buffer_size=AUTOTUNE)
+    def _prepare_for_training(self,
+                              split_name,
+                              split,
+                              shuffle_buffer_size=1000):
+        # Use a cache dir for the normal sized dataset
+        split = split.cache(str(Path(self.data_dir, 'cache')))
+        split = split.shuffle(buffer_size=shuffle_buffer_size)
 
-    def _get_indices(self, start, end):
-        left_border = int(len(self.df.index) * start)
-        right_border = int(len(self.df.index) * end)
-        return self.df.iloc[left_border:right_border].index
+        # Repeat forever
+        split = split.repeat()
+        split = split.batch(Config.BATCH_SIZE)
+        # `prefetch` lets the dataset fetch batches in the background while the
+        # model is training.
+        return split.prefetch(buffer_size=AUTOTUNE)
 
-    def _map_ds(self):
-        for data_set in self.ds.items():
-            self.ds[data_set[0]] = data_set[1].map(self._process_id, num_parallel_calls=AUTOTUNE)
+    def create(self, splits=Config.DS_SPLIT):
+        ids = self.df.index.to_numpy()
+        np.random.shuffle(ids)
+        # Converts splits from percentages to absolute values
+        splits = list(map(lambda x: int(x * len(ids)), splits))
+        splitted_ids = np.split(ids, splits)
 
-    def create(self, splits=Config.DS_SPLIT):       
-        train_fraction = splits[0]
-        test_fraction = train_fraction + splits[1]
-        
-        self.ds = dict()
-        
-        self.ds["train"] = tf.data.Dataset.from_tensor_slices(tf.constant(
-            self._get_indices(0, train_fraction)))
-        self.ds["test"] = tf.data.Dataset.from_tensor_slices(tf.constant(
-            self._get_indices(train_fraction, test_fraction)))
-        self.ds["validate"] = tf.data.Dataset.from_tensor_slices(tf.constant(
-            self._get_indices(test_fraction, 1)))
+        for split_name, split_of_ids in zip(['train', 'validate', 'test'],
+                                            splitted_ids):
+            split = tf.data.Dataset.from_tensor_slices(
+                tf.constant(split_of_ids))
+            split = split.map(self._process_id, num_parallel_calls=AUTOTUNE)
+            split = self._prepare_for_training(split_name, split)
+            setattr(self, split_name, split)
 
-        self._map_ds()
-        self._prepare_for_training()
         return self

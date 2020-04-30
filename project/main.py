@@ -25,9 +25,9 @@ def timeit(ds, steps=default_timeit_steps):
 
 if __name__ == '__main__':
     ds = DataSet().create()
-    for elem in ds.ds["train"].take(1):
+    for elem in ds.train.take(1):
         print(elem)
 
-    timeit(ds.ds["train"])
+    # timeit(ds.ds["train"])
 
-    Evaluation()
+    # Evaluation()
