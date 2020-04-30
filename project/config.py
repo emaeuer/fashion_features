@@ -19,3 +19,4 @@ class Config(object):
         'id', 'gender', 'articleType', 'baseColour', 'season', 'usage'
     ]
     IDS_TO_SKIP = [39403, 39410, 39401, 39425]
+    DS_SPLIT = [0.8, 0.1, 0.1]

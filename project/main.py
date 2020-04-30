@@ -24,10 +24,10 @@ def timeit(ds, steps=default_timeit_steps):
 
 
 if __name__ == '__main__':
-    # ds = DataSet().create()
-    # for elem in ds.ds.take(1):
-    #     print(elem)
+    ds = DataSet().create()
+    for elem in ds.ds["train"].take(1):
+        print(elem)
 
-    # timeit(ds.ds)
+    timeit(ds.ds["train"])
 
     Evaluation()
