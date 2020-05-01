@@ -78,6 +78,10 @@ class DataSet(object):
         img = self._decode_img(img)
         return img, label
 
+    def _augment(self, image, label):
+        # TODO add more augmentation
+        return tf.image.random_crop(image, size=[28, 28, 1]), label
+
     def _prepare_for_training(self,
                               split_name,
                               split,
@@ -85,6 +89,10 @@ class DataSet(object):
         # Use a cache dir for the normal sized dataset
         split = split.cache(str(Path(self.data_dir, 'cache')))
         split = split.shuffle(buffer_size=shuffle_buffer_size)
+
+        # augment the training data
+        if split_name == 'train':
+            split = split.map(self._augment, num_parallel_calls=AUTOTUNE)
 
         # Repeat forever
         split = split.repeat()
