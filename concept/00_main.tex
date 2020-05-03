@@ -201,24 +201,13 @@
 
 % exclude fields from bibliography
 \AtEveryBibitem{%
-    \ifentrytype{article}{
+    \ifentrytype{online}{
         \clearfield{pages}%
         \clearfield{doi}%
         \clearfield{issn}%
         \clearfield{eprint}%
         \clearfield{volume}%
         \clearfield{note}%
-        \clearfield{url}%
-        \clearfield{archivePrefix}%%
-    }{}
-    \ifentrytype{misc}{
-        \clearfield{pages}%
-        \clearfield{doi}%
-        \clearfield{issn}%
-        \clearfield{eprint}%
-        \clearfield{volume}%
-        \clearfield{note}%
-        \clearfield{url}%
         \clearfield{archivePrefix}%%
     }{}
 }
@@ -228,6 +217,7 @@
 \DeclareFieldFormat[misc]{date}{(#1)}
 
 \renewcommand{\cftafterloatitle}{\parindent}
+\newcommand{\tabitem}{~~\llap{\textbullet}~~}
 
 \title{Fashion Feature Annotation}
 \date{\today}
@@ -295,7 +285,7 @@ Betreuer: & Moritz Wilke\\
 
 \pagestyle{table}
 
-%\section*{Literaturverzeichnis}
-%\printbibliography[heading=none, category=cited]
+\section*{Literaturverzeichnis}
+\printbibliography[heading=none, category=cited]
 \label{page:last}
 \end{document}

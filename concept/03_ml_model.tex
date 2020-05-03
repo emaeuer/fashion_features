@@ -1,1 +1,14 @@
 \section{Modell} \label{sec:model}
+
+Nachdem erfolgreich ein Datensatz erzeugt wurde, kann auf diesem mithilfe von maschinellem Lernen ein Modell angelegt werden, das letztendlich die Klassifizierung durchführen soll. Im Folgenden soll näher auf die angewendete Architektur und die Besonderheiten bei der Verwendung dieser eingegangen werden.
+
+Als Modell soll ein künstliches neuronales Netzwerk (KNN) verwendet werden, das mithilfe eines überwachten Lernverfahrens trainiert wird. KNNs besitzen den Vorteil, dass sie sehr gut mit großen Datenmengen umgehen können und nicht auf eine Gleichverteilung der Daten angewiesen sind. Zudem generalisieren sie Problem, sodass auch unbekannte Eingaben verarbeitetet werden können. Ein weiterer Vorteil, der essenziell für dieses Projekt ist, ist, dass sie sich sehr gut für die Verarbeitung von Bilddaten eignen. \cite{Mahanta2020}
+
+Die aktuell beste Architektur für die Klassifizierung von Bildern stellen Convolutional Neuronal Networks (CNN) dar. Diese setzen sich grundsätzlich aus zwei Teilen zusammen. Der erste Teil dient zur Merkmalsextraktion und der zweite zur Klassifikation. Nach diesem Prinzip werden zuerst Merkmale, wie Kanten, im gesamten Bild gefunden und anschließend anhand ihrer Komposition klassifiziert. Vertiefende Informationen zu CNNs können unter anderem in \cite{Goodfellow2016} oder in \cite{CS2020} nachgelesen werden.
+
+Im Bezug auf dieses Projekt gibt es noch Anpassungen, die für die Erfüllung der Zielsetzung beachtet werden müssen. Die erste Besonderheit besteht darin, dass Transfer Learning genutzt werden soll. Dementsprechend wird ein bereits trainiertes CNN als Merkmalsextraktor verwendet und dessen Gewichte eingefroren. Dadurch verringert sich die Anzahl lernbarer Parameter deutlich und damit gleichzeitig die nötige Trainingszeit. Gelernt werden daher nur die Gewichte in den für die Klassifizierung zuständigen Schichten. Falls es sich empirisch als sinnvoll erweist, könnten auch die letzten Schichten des verwendeten Merkmalsextraktor trainiert werden, da dieses deutlich spezifischer für eine Domäne sind, als die ersten. 
+
+Die zweite Anpassung ist notwendig, um eine Multi-Label-Klassifikation durchführen zu können. Dazu wird eine Aktivierungsfunktion benötigt, die im Gegensatz zu Softmax, jede Aktivierung unabhängig von den anderen berechnet. Diese Unabhängigkeit der Ergebnisse ist notwendig, da ein Objekt mehreren verschiedenen Klassen zugeordnet werden soll. Eine Aktivierungsfunktion, die diese Anforderung erfüllt ist beispielsweise Sigmoid. Vorerst soll dann aus jeder Kategorie die maximale Aktivierung als Ergebnis verwendet werden. Für Farben wäre eine spätere Ergänzung denkbar, die es ermöglicht, mehrere Werte zu erkennen, indem alle Aktivierungen über einen bestimmten Schwellenwert gewählt werden. 
+
+TODO Planung der Schichten für die Klassifizierung plus Skizze des gesamten Modells
+
