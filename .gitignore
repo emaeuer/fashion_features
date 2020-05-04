@@ -437,3 +437,4 @@ project/data/*
 !project/data/mappings.yaml
 *.zip
 project/results
+concept/out
