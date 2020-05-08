@@ -24,10 +24,11 @@ def timeit(ds, steps=default_timeit_steps):
 
 
 if __name__ == '__main__':
-    ds = DataSet().create()
-    for elem in ds.train.take(1):
-        print(elem)
+    # ds = DataSet().create()
+    # for elem in ds.train.take(1):
+    #     print(elem)
 
-    # timeit(ds.ds["train"])
+    # # timeit(ds.ds["train"])
 
     # Evaluation()
+    DataSet.adjust_styles_csv()

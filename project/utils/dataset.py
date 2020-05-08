@@ -1,10 +1,13 @@
+import multiprocessing
+import random
 import sys
+from pathlib import Path
+import numpy as np
+import pandas as pd
+import tensorflow as tf
 
 import yaml
-import tensorflow as tf
-from pathlib import Path
-import pandas as pd
-import numpy as np
+from tqdm import tqdm
 
 from config import Config
 
@@ -23,27 +26,85 @@ class DataSet(object):
         self._read_labels()
 
     @staticmethod
-    def load_styles_data_frame():
-        df = pd.read_csv(Path(Config.DATA_DIR, 'styles.csv'),
-                         usecols=Config.STYLES_USE_COLS)
-        df.set_index(Config.STYLES_INDEX_COL, inplace=True)
-        df.drop(Config.IDS_TO_SKIP, inplace=True)
-        return df
-
-    @staticmethod
-    def remap_labels(df: pd.DataFrame,
-                     mappings_file_path=Config.MAPPINGS_FILE):
-        # Remaps labels according to a predefined mapping
+    def adjust_styles_csv(mappings_file_path=Config.MAPPINGS_FILE):
+        df = DataSet.load_styles_data_frame()
+        new_start_id = max(df.index) + 1
         mappings = yaml.full_load(open(mappings_file_path, 'r'))
         for key, value in mappings.items():
             df[key] = df[key].map(value)
-        return df.dropna()
+        df.dropna()
+        grouped = df.groupby(list(df.columns))
+        old_ids = list()
+        duplicated_labels = list()
+        h = 0
+        print(grouped.count())
+        # for k, v in grouped.indices.items():
+        #     test = set(v) - set(df.index)
+        #     if len(test) > 0:
+        #         print(test)
+        #     if len(v) >= Config.MIN_SAMPLES_PER_LABEL:
+        #         continue
+        #     for i in range(Config.MIN_SAMPLES_PER_LABEL - len(v)):
+        #         chosen_old_id = random.choice(v)
+        #         old_ids.append(chosen_old_id)
+        #         duplicated_labels.append(k)
+        # print(h)
+        # df_extension = pd.DataFrame(duplicated_labels, columns=df.columns)
+        # # shift index to get new unique ids
+        # df_extension.index += new_start_id
+        # df = df.append(df_extension)
+        # df['id'] = df.index
+        # df.to_csv(Path(Config.DATA_DIR, 'adjusted_styles.csv'))
+        # pool = multiprocessing.Pool(1)
+        # progress_bar = tqdm(total=len(old_ids))
+
+        # def update(*a):
+        #     progress_bar.update()
+
+        # for i in [list(zip(old_ids, df_extension.index))[0]]:
+        #     pool.apply_async(DataSet.add_augmented_images,
+        #                      args=i,
+        #                      callback=update)
+
+        # pool.close()
+        # pool.join()
+
+        # print('Finished with dataset adjustment')
+
+    @staticmethod
+    def add_augmented_images(*ids):
+        from tensorflow.keras.preprocessing.image import ImageDataGenerator
+        # Takes a list of ids containing the old id and the new id
+        # Applies augmentation to the old image and saves it as a new one
+        image_paths = [
+            str(Path(Config.DATA_DIR, 'images', f'{id}.jpg')) for id in ids
+        ]
+        image = tf.image.decode_jpeg(tf.io.read_file(image_paths[0]))
+        dg = ImageDataGenerator(
+            rotation_range=30,
+            zoom_range=0.5,
+            shear_range=0.3,
+            horizontal_flip=True,
+            width_shift_range=0.3,
+            height_shift_range=0.3,
+        )
+
+        tf.keras.preprocessing.image.save_img(
+            image_paths[1], dg.random_transform(image.numpy()))
+
+    @staticmethod
+    def load_styles_data_frame(file_name='styles.csv'):
+        df = pd.read_csv(Path(Config.DATA_DIR, file_name),
+                         usecols=Config.STYLES_USE_COLS)
+        df.set_index(Config.STYLES_INDEX_COL, inplace=True)
+        if 'adjusted' not in file_name:
+            df.drop(Config.IDS_TO_SKIP, inplace=True)
+        return df
 
     def _read_labels(self):
         # Returns labels as a endcode dataframe. Labels are indexed by their
         # ids
         df = DataSet.load_styles_data_frame()
-        df = DataSet.remap_labels(df)
         for col in df.columns:
             df[col] = pd.Categorical(df[col])
             self.categories[col] = df[col].cat.categories
@@ -63,7 +124,7 @@ class DataSet(object):
         # Convert the compressed string to a 3D uint8 tensor
         img = tf.image.decode_jpeg(img, channels=3)
         # Use `convert_image_dtype` to convert to floats in the [0,1] range.
-        img = tf.image.convert_image_dtype(img, tf.float32)
+        # img = tf.image.convert_image_dtype(img, tf.float32)
         # Resize the image to the desired size.
         return tf.image.resize(img, [Config.IMG_WIDTH, Config.IMG_HEIGHT])
 
@@ -81,6 +142,7 @@ class DataSet(object):
     def _augment(self, image, label):
         # TODO add more augmentation
         return tf.image.random_crop(image, size=[28, 28, 1]), label
+        # return image, label
 
     def _prepare_for_training(self,
                               split_name,

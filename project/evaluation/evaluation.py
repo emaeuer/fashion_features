@@ -12,7 +12,7 @@ from config import Config
 
 class Evaluation(object):
     def __init__(self):
-        self.df = DataSet.load_styles_data_frame()
+        self.df = DataSet.remap_labels(DataSet.load_styles_data_frame())
         self.counts = dict()
         self.results_path = Path(Config.VIZ_RESULTS_DIR)
         self.results_path.mkdir(parents=True, exist_ok=True)
@@ -27,6 +27,8 @@ class Evaluation(object):
         yaml.dump({k: v.to_dict()
                    for k, v in self.counts.items()},
                   Path(self.results_path, 'counts.yaml').open('w'))
+
+        self.count_unique_labels()
 
     def _plot_dist(self, col):
         self.counts[col].plot.bar(y='count', rot=0, figsize=(10, 10))

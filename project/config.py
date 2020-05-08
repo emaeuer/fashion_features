@@ -20,3 +20,4 @@ class Config(object):
     ]
     IDS_TO_SKIP = [39403, 39410, 39401, 39425]
     DS_SPLIT = [0.8, 0.1, 0.1]
+    MIN_SAMPLES_PER_LABEL = 20
