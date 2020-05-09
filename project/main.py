@@ -1,4 +1,5 @@
 import time
+import tensorflow as tf
 
 from utils import DataSet
 from config import Config
@@ -24,11 +25,8 @@ def timeit(ds, steps=default_timeit_steps):
 
 
 if __name__ == '__main__':
-    # ds = DataSet().create()
-    # for elem in ds.train.take(1):
-    #     print(elem)
-
-    # # timeit(ds.ds["train"])
+    ds = DataSet()
+    # timeit(ds.train)
 
     # Evaluation()
-    DataSet.adjust_styles_csv()
+    # DataSet.adjust_styles_csv()
