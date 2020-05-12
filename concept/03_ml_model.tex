@@ -6,9 +6,15 @@ Als Modell soll ein "artificial neural network" (ANN) verwendet werden, das mith
 
 Die aktuell beste Architektur für die Klassifizierung von Bildern stellen Convolutional Neuronal Networks (CNN) dar. Diese setzen sich grundsätzlich aus zwei Teilen zusammen. Der erste Teil dient zur Merkmalsextraktion und der zweite zur Klassifikation. Nach diesem Prinzip werden zuerst Merkmale, wie Kanten, im gesamten Bild gefunden und anschließend anhand ihrer Komposition klassifiziert. Vertiefende Informationen zu CNNs können unter anderem in \cite{Goodfellow2016} oder in \cite{CS2020} nachgelesen werden.
 
-Im Bezug auf dieses Projekt gibt es noch Anpassungen, die für die Erfüllung der Zielsetzung beachtet werden müssen. Die erste Besonderheit besteht darin, dass Transfer Learning genutzt werden soll. Dementsprechend wird ein bereits trainiertes CNN als Merkmalsextraktor verwendet und dessen Gewichte eingefroren. Dadurch verringert sich die Anzahl der zu lernenden Parameter deutlich und die damit verbundene Trainingszeit. Gelernt werden daher nur die Gewichte in den für die Klassifizierung zuständigen Schichten. Falls es sich empirisch als sinnvoll erweist, könnten auch die letzten Schichten des verwendeten Merkmalsextraktors trainiert werden, da dieses deutlich spezifischer für eine Domäne sind, als die ersten. 
+Im Bezug auf dieses Projekt gibt es noch Anpassungen, die für die Erfüllung der Zielsetzung beachtet werden müssen. Die erste Besonderheit besteht darin, dass Transfer Learning genutzt werden soll. Durch die Verwendung eines vortrainierten CNNs verringert sich die Anzahl der zu lernenden Parameter und die damit verbundene Trainingszeit deutlich. Während des Trainings werden somit nur Gewichte der Klassifikationsschichten gelernt. Optional können auch die Parameter der letzten Schichten des vortrainierten CNNs weiter angepasst werden, um dessen Merkmalsextraktion datensatzspezifischer zu gestalten.
 
 Die zweite Anpassung ist notwendig, um eine Multi-Label-Klassifikation durchführen zu können. Dazu wird eine Aktivierungsfunktion benötigt, die im Gegensatz zu Softmax, jede Aktivierung unabhängig von den anderen berechnet. Diese Unabhängigkeit der Ergebnisse ist notwendig, da ein Objekt mehreren verschiedenen Klassen zugeordnet werden soll. Eine Aktivierungsfunktion, die diese Anforderung erfüllt ist beispielsweise Sigmoid. Vorerst soll dann aus jeder Kategorie die maximale Aktivierung als Ergebnis verwendet werden. Für Farben wäre eine spätere Ergänzung denkbar, die es ermöglicht, mehrere Werte zu erkennen, indem alle Aktivierungen über einen bestimmten Schwellenwert gewählt werden. 
 
-TODO Planung der Schichten für die Klassifizierung plus Skizze des gesamten Modells
+Abschließend werden alle bisher beschriebenen Komponenten in eine Architekturübersicht zusammengefasst \ref{fig:generalArch}. Zuerst werden die Rohbilder durch Augmentation in ihrer Stückzahl erweitert, skaliert und normalisiert. Im Anschluss werden die Bilder durch das vortrainierte CNN zu einen merkmalsangereicherten Volumen transformiert. Dieses Volumen wird dann in ein eindimensionales Array abgeflacht, welches den Input zu mehreren aufeinanderfolgenden Klassifikationsschichten bildet. Die Klassifikationsschichten sind vollvernetzt. Letztlich verarbeitet die Sigmoidfunktion den Output der Klassifikation zu den maximalen Aktivierungen.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\linewidth]{images/general_architecture.png}
+	\caption{Architekturübersicht}
+	\label{fig:generalArch}
+\end{figure}
 
