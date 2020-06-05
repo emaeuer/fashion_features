@@ -1,9 +1,9 @@
 import time
 import tensorflow as tf
-
-from utils import DataSet
+from utils import DataUtils
+from dataset import DataSet
+from model import Model
 from config import Config
-from evaluation import Evaluation
 
 default_timeit_steps = 1000
 
@@ -25,8 +25,9 @@ def timeit(ds, steps=default_timeit_steps):
 
 
 if __name__ == '__main__':
-    ds = DataSet()
-    # timeit(ds.train)
 
     # Evaluation()
-    # DataSet.adjust_styles_csv()
+    # DataUtils.adjust_data()
+    model = Model(DataSet())
+    model.fit()
+    print(model.eval())
