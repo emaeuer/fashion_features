@@ -1,10 +1,8 @@
 \section{Datensatz} \label{sec:data_set}
 
-Der folgende Abschnitt soll sich mit dem verwendeten Datensatz auseinandersetzen. Die Auseinandersetzung beinhaltet eine Evaluation verschiedener Datensätze und die Selektion des am besten geeigneten. Des Weiteren soll auf die Methoden eingegangen werden, die den gewählten Datensatz auf den hier vorliegenden Anwendungsfall anpassen.
-
 Für die Erstellung eines Datensatzes existieren grundsätzlich zwei Möglichkeiten. Der erste Ansatz besteht darin, die Datensammlung selbst durchzuführen und die Daten beispielsweise von der Webseite eines Fashion-Online-Shops zu extrahieren. Diese Methode bietet einen hohen Grad an Flexibilität, ist allerdings sehr aufwendig hinsichtlich einer detailreichen Label-Ergänzung, welche teils manuell erfolgen muss. Die Alternative besteht darin einen bereits existierenden Datensatz zu verwenden und die Erstellung so deutlich zu vereinfachen. Aufgrund des manuellen Aufwands der ersten Variante und der Verfügbarkeit verschiedener vorgefertigter Fashion-Datensätze soll in diesem Projekt der zweite Ansatz verfolgt werden.
 
-Dementsprechend muss aus den verfügbaren Datensätzen einer ausgewählt werden, der den Anforderungen des Projektes am meisten genügt. Mögliche Datensätze sind "Fashion Product Images Dataset" \cite{FashionProduct2019}, "Fashionpedia" \cite{Fashionpedia2020}, "Fashion-MNIST" \cite{FashionMNIST2017} und "Deepfashion" \cite{DeepFashion2016}. Ein Vergleich ist in Tabelle \ref{tab:compareSets} dargestellt. 
+Dementsprechend muss aus den verfügbaren Datensätzen jener ausgewählt werden, der den Anforderungen des Projektes am meisten genügt. Mögliche Datensätze sind \say{Fashion Product Images Dataset} \cite{FashionProduct2019}, \say{Fashionpedia} \cite{Fashionpedia2020}, \say{Fashion-MNIST} \cite{FashionMNIST2017} und \say{Deepfashion} \cite{DeepFashion2016}. Ein Vergleich ist in Tabelle \ref{tab:compareSets} dargestellt. 
 
 \begin{table}[H]
 	\centering
@@ -46,28 +44,28 @@ Dementsprechend muss aus den verfügbaren Datensätzen einer ausgewählt werden,
 	\label{tab:compareSets}
 \end{table}
 
-Aufgrund dessen, dass die Kleidung i. d. R. isoliert abgebildet wird und eine ausreichende Auswahl an Attributen existiert, soll der "Fashion Product Images" Datensatz verwendet werden. "Fashionpedia" wurde ausgeschlossen, weil zusätzlich zu der Klassifizierung noch eine Segmentierung der Bilder notwendig wäre. "Fashion-MNIST" eignet sich nicht, da der Datensatz keine befriedigende Komplexität für diesen Anwendungsfall bietet. Die Daten aus "Deepfashion" stellen ebenfalls einen geeigneten Datensatz dar, werden vorerst jedoch nicht verwendet. Bei Bedarf kann dieser Datensatz in Teilen oder komplett genutzt werden, um eventuelle Ungleichverteilungen auszugleichen oder die Datenmenge zu vergrößern.
+Aufgrund dessen, dass die Kleidung i. d. R. isoliert abgebildet wird und eine ausreichende Auswahl an Attributen existiert, soll der \say{Fashion Product Images} Datensatz verwendet werden. \say{Fashionpedia} wurde ausgeschlossen, weil zusätzlich zu der Klassifizierung noch eine Segmentierung der Bilder notwendig wäre. \say{Fashion-MNIST} eignet sich nicht, da der Datensatz keine befriedigende Komplexität für diesen Anwendungsfall bietet. Die Daten aus \say{Deepfashion} stellen ebenfalls einen geeigneten Datensatz dar, werden vorerst jedoch nicht verwendet. Bei Bedarf kann dieser Datensatz in Teilen oder komplett genutzt werden, um eventuelle Ungleichverteilungen auszugleichen oder die Datenmenge zu vergrößern.
 
-Bevor "Fashion Product Images" verwendet werden kann, müssen jedoch noch einige Analysen durchgeführt und infolgedessen Anpassungen vorgenommen werden. Zu den Änderungen gehört die Selektion relevanter Merkmale (Accessoires werden beispielsweise nicht berücksichtigt) sowie eine sinnvolle Zusammenfassung einiger Werte (z. B. werden Jeans und Leggings Hosen zugeordnet). In Abbildung \ref{fig:evaluation} sind die Verteilungen und möglichen Ausprägungen der gewählten Klassen dargestellt.
+Bevor \say{Fashion Product Images} verwendet werden kann, müssen jedoch noch einige Analysen durchgeführt und infolgedessen Anpassungen vorgenommen werden. Zu den Änderungen gehört die Selektion relevanter Merkmale (Accessoires werden beispielsweise nicht berücksichtigt) sowie eine sinnvolle Zusammenfassung einiger Werte (z. B. werden Jeans und Leggings Hosen zugeordnet). In Abbildung \ref{fig:evaluation} sind die Verteilungen und möglichen Ausprägungen der gewählten Klassen dargestellt.
 
 \begin{figure}[H]
 	\centering
-	\begin{subfigure}[c]{0.32\linewidth}
+	\begin{subfigure}[c]{0.155\linewidth}
 		\includegraphics[width=\linewidth]{images/gender.png}
 	\end{subfigure}
-	\begin{subfigure}[c]{0.32\linewidth}
+	\begin{subfigure}[c]{0.45\linewidth}
 		\includegraphics[width=\linewidth]{images/articleType.png}
 	\end{subfigure}
-	\begin{subfigure}[c]{0.32\linewidth}
+	\begin{subfigure}[c]{0.355\linewidth}
 		\includegraphics[width=\linewidth]{images/baseColour.png}
 	\end{subfigure}
 	\caption{Verteilungen der ausgewählten Merkmale}
 	\label{fig:evaluation}
 \end{figure}
 
-Für die Erstellung des verwendeten Datensatzes werden die Bilder normalisiert und erweitert. Normalisierung bedeutet, dass die Bilder auf eine einheitliche Größe gebracht und die Farbwerte auf ein Intervall von null bis eins skaliert werden. Bei der Erweiterung der Bilder sollen z. B. die Rotation, Helligkeit und die Spiegelung zufällig verändert werden. Die Erweiterung betrifft nur Bilder des Trainingsdatensatzes und innerhalb davon nur einzigartige Label-Ausprägungen, die unter 20 Bilder als Trainingsbeispiele besitzen.
+Für die Erstellung des verwendeten Datensatzes werden die Bilder normalisiert und erweitert. Normalisierung bedeutet, dass die Bilder auf eine einheitliche Größe gebracht und die Farbwerte auf ein Intervall von null bis eins skaliert werden. Bei der Erweiterung der Bilder sollen z. B. die Rotation, Helligkeit und die Spiegelung zufällig verändert werden. Die Erweiterung betrifft nur die Bilder des Trainingsdatensatzes, welche seltene einzigartige Label-Ausprägungen besitzen (unter 20 Bilder als Trainingsbeispiele).
 
-Die Labels werden in Form eines Multi-Hot codierten Vektors repräsentiert. Dementsprechend steht jede eins dafür, dass eine bestimmte Ausprägung in dem Bild vorkommt. In Abbildung \ref{fig:multihot} ist das Prinzip vereinfacht dargestellt. Diese Form der Darstellung wird benötigt, damit das Modell eine "multitask classification" durchführen kann.
+Die Labels werden in Form eines \say{Multi-Hot} codierten Vektors repräsentiert. Dementsprechend steht jede eins dafür, dass eine bestimmte Ausprägung in dem Bild vorkommt. In Abbildung \ref{fig:multihot} ist das Prinzip vereinfacht dargestellt. Diese Form der Darstellung wird benötigt, damit das Modell eine \say{multitask classification} durchführen kann.
 
 \begin{figure}[H]
 	\centering
