@@ -30,4 +30,4 @@ if __name__ == '__main__':
     # DataUtils.adjust_data()
     model = Model(DataSet())
     model.fit()
-    print(model.eval())
+    print("Validation: ", model.eval())

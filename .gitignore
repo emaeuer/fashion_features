@@ -404,6 +404,13 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+bin/
+
+# Jupyter
+share/
+
+# Logs
+logs/
 
 # Spyder project settings
 .spyderproject
@@ -438,3 +445,6 @@ project/data/*
 *.zip
 project/results
 concept/out
+project/etc/jupyter/nbconfig/notebook.d/widgetsnbextension.json
+project/pyvenv.cfg
+project/lib64

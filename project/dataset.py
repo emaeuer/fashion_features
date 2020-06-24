@@ -50,7 +50,7 @@ class DataSet(object):
         img = self._decode_img(img)
 
         # Set shape manually bc tensor is returned by a py_func
-        label.set_shape([36])
+        label.set_shape([39])
         return img, label
 
     def _prepare_for_training(self,
