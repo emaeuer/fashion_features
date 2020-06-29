@@ -12,7 +12,7 @@ from config import Config
 
 class DataUtils:
     @staticmethod
-    def adjust_data(mappings_file_path=Config.MAPPINGS_FILE):
+    def adjust_data(mappings_file_path=str(Config.MAPPINGS_FILE)):
         np.random.seed(42)
         df = DataUtils.load_data_frame()
         df = DataUtils.drop_missing_images(df)

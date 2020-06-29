@@ -1,33 +1,31 @@
-import time
-import tensorflow as tf
-from utils import DataUtils
+import argparse
+import os
+from utils.data_utils import DataUtils
 from dataset import DataSet
 from model import Model
 from config import Config
 
-default_timeit_steps = 1000
-
-
-def timeit(ds, steps=default_timeit_steps):
-    # tests the performance of loading and preprocessing the dataset
-    start = time.time()
-    it = iter(ds)
-    for i in range(steps):
-        next(it)
-        if i % 10 == 0:
-            print(i, end='')
-    print()
-    end = time.time()
-
-    duration = end - start
-    print("{} batches: {} s".format(steps, duration))
-    print("{:0.5f} Images/s".format(Config.BATCH_SIZE * steps / duration))
-
-
 if __name__ == '__main__':
-
-    # Evaluation()
-    # DataUtils.adjust_data()
-    model = Model(DataSet())
-    model.fit()
-    print("Validation: ", model.eval())
+    parser = argparse. ArgumentParser()
+    parser.add_argument('--train', dest='train', action='store_true')
+    parser.add_argument('--adjust_data', dest='adjust_data', action='store_true')
+    parser.add_argument('--analyze_data', dest='analyze_data', action='store_true')
+    
+    args = parser.parse_args()
+    if args.train:
+        Config.MODE = 'train'
+        if not Config.LOG_DIR.exists():
+            Config.LOG_DIR.mkdir(parents=True)
+        if not Config.CHECKPOINT_DIR.exists():
+            Config.CHECKPOINT_DIR.mkdir(parents=True)
+        model = Model(DataSet())
+        model.fit()
+        model.eval()
+    if args.adjust_data:
+        Config.MODE = 'adjust_data'
+        DataUtils.adjust_data()
+    if args.analyze_data:
+        Config.MODE = 'analyze_data'
+        if not Config.VIZ_RESULTS_DIR.exists():
+           Config.VIZ_RESULTS_DIR.mkdir()
+        Evaluation()

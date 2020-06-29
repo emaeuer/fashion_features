@@ -14,7 +14,7 @@ class Evaluation(object):
     def __init__(self):
         self.df = DataSet.remap_labels(DataSet.load_styles_data_frame())
         self.counts = dict()
-        self.results_path = Path(Config.VIZ_RESULTS_DIR)
+        self.results_path = Config.VIZ_RESULTS_DIR
         self.results_path.mkdir(parents=True, exist_ok=True)
         self.evaluate_data()
 

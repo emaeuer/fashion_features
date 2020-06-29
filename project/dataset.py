@@ -6,7 +6,7 @@ import pandas as pd
 import tensorflow as tf
 
 from config import Config
-from utils import DataUtils
+from utils.data_utils import DataUtils
 
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 

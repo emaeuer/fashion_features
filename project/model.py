@@ -1,3 +1,4 @@
+import pickle
 import tensorflow as tf
 from tensorboard import summary
 from config import Config
@@ -7,7 +8,8 @@ import datetime
 class Model:
     def __init__(self, ds):
         self.ds = ds
-        self.create_model()
+        if Config.MODE == 'train':
+            self.create_model()
 
     def create_model(self):
         mirrored_strategy = tf.distribute.MirroredStrategy()
@@ -33,21 +35,22 @@ class Model:
                 prediction_layer_two
             ])
 
-        self.model.compile(optimizer=tf.keras.optimizers.Adam(),
+        self.model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.01),
                            loss=tf.keras.losses.BinaryCrossentropy(),
-                           metrics=['accuracy'])
+                           metrics=['binary_accuracy'])
 
     def fit(self):
-        #log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-        #tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
-
-        self.model.fit(self.ds.train,
-                       steps_per_epoch=44199 // Config.BATCH_SIZE,
-                       epochs=1,
+        tensorboard_cb = tf.keras.callbacks.TensorBoard(str(Config.LOG_DIR))
+        early_stopping_cb = tf.keras.callbacks.EarlyStopping(verbose=1, patience=30, min_delta=1)
+        checkpoint_cb = tf.keras.callbacks.ModelCheckpoint(f'{Config.CHECKPOINT_DIR}/best_model.h5'), save_best=True, save_weights_only=True)
+        lr_scheduler_cb = tf.keras.callbacks.ReduceLROnPlateau(factor=0.2,min_lr=0.001)
+        history = self.model.fit(self.ds.train,
+                       steps_per_epoch=35987 // Config.BATCH_SIZE,
+                       epochs=Config.EPOCHS,
                        validation_data=self.ds.val,
-                       validation_steps=4444 // Config.BATCH_SIZE,
-                       callbacks=[])
-
+                       validation_steps=2952 / Config.BATCH_SIZE,
+                       callbacks=[tensorboard_cb, checkpoint_cb, early_stopping_cb,lr_scheduler_cb])
+ 	
     def eval(self):
         return self.model.evaluate(self.ds.test,
-                                   steps=4445 // Config.BATCH_SIZE)
+                                   steps=2953 // Config.BATCH_SIZE)
