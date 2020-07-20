@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 from tqdm import tqdm
 
-from utils import DataSet
+from dataset import DataSet
 from config import Config
 
 

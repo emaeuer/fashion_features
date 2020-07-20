@@ -4,10 +4,13 @@ import subprocess, re
 # Nvidia-smi GPU memory parsing.
 # Tested on nvidia-smi 370.23
 
+
 def run_command(cmd):
     """Run command, return output as string."""
-    output = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True).communicate()[0]
+    output = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+                              shell=True).communicate()[0]
     return output.decode("ascii")
+
 
 def list_available_gpus():
     """Returns list of available GPU ids."""
@@ -17,9 +20,10 @@ def list_available_gpus():
     result = []
     for line in output.strip().split("\n"):
         m = gpu_regex.match(line)
-        assert m, "Couldnt parse "+line
+        assert m, "Couldnt parse " + line
         result.append(int(m.group("gpu_id")))
     return result
+
 
 def gpu_memory_map():
     """Returns map of GPU id to memory allocated on that GPU."""
@@ -27,7 +31,8 @@ def gpu_memory_map():
     gpu_output = output[output.find("GPU Memory"):]
     # lines of the form
     # |    0      8734    C   python                                       11705MiB |
-    memory_regex = re.compile(r"[|]\s+?(?P<gpu_id>\d+)\D+?(?P<pid>\d+).+[ ](?P<gpu_memory>\d+)MiB")
+    memory_regex = re.compile(
+        r"[|]\s+?(?P<gpu_id>\d+)\D+?(?P<pid>\d+).+[ ](?P<gpu_memory>\d+)MiB")
     rows = gpu_output.split("\n")
     result = {gpu_id: 0 for gpu_id in list_available_gpus()}
     for row in gpu_output.split("\n"):

@@ -84,6 +84,7 @@ class DataSet(object):
             df[col] = df[col].cat.codes
         all_labels = list(itertools.chain(*self.categories.values()))
         self.one_hot_decoding = dict(zip(range(len(all_labels)), all_labels))
+        print(self.one_hot_decoding)
         self.df = df
 
         for set_name, indices in list(zip(set_names, ids_by_split)):

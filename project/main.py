@@ -3,14 +3,19 @@ import os
 from utils.data_utils import DataUtils
 from dataset import DataSet
 from model import Model
+from evaluation import Evaluation
 from config import Config
 
 if __name__ == '__main__':
-    parser = argparse. ArgumentParser()
+    parser = argparse.ArgumentParser()
     parser.add_argument('--train', dest='train', action='store_true')
-    parser.add_argument('--adjust_data', dest='adjust_data', action='store_true')
-    parser.add_argument('--analyze_data', dest='analyze_data', action='store_true')
-    
+    parser.add_argument('--adjust_data',
+                        dest='adjust_data',
+                        action='store_true')
+    parser.add_argument('--analyze_data',
+                        dest='analyze_data',
+                        action='store_true')
+
     args = parser.parse_args()
     if args.train:
         Config.MODE = 'train'
@@ -27,5 +32,5 @@ if __name__ == '__main__':
     if args.analyze_data:
         Config.MODE = 'analyze_data'
         if not Config.VIZ_RESULTS_DIR.exists():
-           Config.VIZ_RESULTS_DIR.mkdir()
+            Config.VIZ_RESULTS_DIR.mkdir()
         Evaluation()
