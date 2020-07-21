@@ -9,6 +9,8 @@ import tensorflow as tf
 
 from config import Config
 
+import os
+
 
 class DataUtils:
     @staticmethod
@@ -99,3 +101,26 @@ class DataUtils:
             int(path.stem)
             for path in Path(Config.DATA_DIR, 'images').glob('*'))
         return df.drop(index=set(df.index) - image_path_ids)
+
+    @staticmethod
+    def decode_img(img_path):
+        img = tf.io.read_file(img_path)
+        # Convert the compressed string to a 3D uint8 tensor
+        img = tf.image.decode_jpeg(img, channels=3)
+        # Use `convert_image_dtype` to convert to floats in the [0,1] range.
+        img = tf.image.convert_image_dtype(img, tf.float32)
+        # Resize the image to the desired size.
+        return tf.image.resize(img, Config.IMG_SHAPE)
+
+    @staticmethod
+    def load_all_images(path):
+        decoded_images = list()
+
+        for img_file in os.listdir(path):
+            file_type = os.path.splitext(img_file)[1]
+            if file_type.lower() in ['.jpg', '.jpeg', '.png', '.gif']:
+                img = np.expand_dims(DataUtils.decode_img(path + '/' + img_file), axis=0)
+                decoded_images.append(img)
+
+        return np.vstack(decoded_images)
+

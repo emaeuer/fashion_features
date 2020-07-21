@@ -3,15 +3,16 @@ import tensorflow as tf
 from tensorboard import summary
 from config import Config
 import datetime
+import numpy as np
 
 
 class Model:
-    def __init__(self, ds):
+    def __init__(self, ds, pre_trained_model):
         self.ds = ds
-        if Config.MODE == 'train':
-            self.create_model()
+        if Config.MODE == 'train' or Config.MODE == 'predict_images':
+            self.create_model(pre_trained_model)
 
-    def create_model(self):
+    def create_model(self, pre_trained_model):
         mirrored_strategy = tf.distribute.MirroredStrategy()
 
         with mirrored_strategy.scope():
@@ -42,6 +43,9 @@ class Model:
             loss=tf.keras.losses.BinaryCrossentropy(),
             metrics=['binary_accuracy'])
 
+        if Config.MODE == 'predict_images' and pre_trained_model is not None:
+            self.model.load_weights(pre_trained_model)
+
     def fit(self):
         tensorboard_cb = tf.keras.callbacks.TensorBoard(str(Config.LOG_DIR))
         early_stopping_cb = tf.keras.callbacks.EarlyStopping(verbose=1,
@@ -66,3 +70,20 @@ class Model:
     def eval(self):
         return self.model.evaluate(self.ds.test,
                                    steps=2953 // Config.BATCH_SIZE)
+
+    def predict(self, images):
+        predictions = self.model.predict(images)
+        decoded_predictions = list()
+
+        for prediction in predictions:
+            decoded_prediction = dict()
+
+            decoded_prediction['gender'] = self.ds.one_hot_decoding[np.argmax(prediction[0:2])]
+            decoded_prediction['articleType'] = self.ds.one_hot_decoding[np.argmax(prediction[2:17]) + 2]
+            decoded_prediction['baseColour'] = self.ds.one_hot_decoding[np.argmax(prediction[17:28]) + 17]
+            decoded_prediction['season'] = self.ds.one_hot_decoding[np.argmax(prediction[28:32]) + 28]
+            decoded_prediction['usage'] = self.ds.one_hot_decoding[np.argmax(prediction[32:]) + 32]
+
+            decoded_predictions.append(decoded_prediction)
+        
+        return decoded_predictions

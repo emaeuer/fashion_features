@@ -31,14 +31,6 @@ class DataSet(object):
         ]
         return tf.concat(hotencoded_tensors, axis=0)
 
-    def _decode_img(self, img):
-        # Convert the compressed string to a 3D uint8 tensor
-        img = tf.image.decode_jpeg(img, channels=3)
-        # Use `convert_image_dtype` to convert to floats in the [0,1] range.
-        img = tf.image.convert_image_dtype(img, tf.float32)
-        # Resize the image to the desired size.
-        return tf.image.resize(img, Config.IMG_SHAPE)
-
     def _process_id(self, id):
         label = tf.py_function(func=self._get_label, inp=[id], Tout=tf.float32)
         file_path = tf.strings.join([
@@ -47,7 +39,7 @@ class DataSet(object):
         ])
         # Load the raw data from the file as a string
         img = tf.io.read_file(file_path)
-        img = self._decode_img(img)
+        img = DataUtils.decode_img(img)
 
         # Set shape manually bc tensor is returned by a py_func
         label.set_shape([39])

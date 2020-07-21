@@ -15,6 +15,14 @@ if __name__ == '__main__':
     parser.add_argument('--analyze_data',
                         dest='analyze_data',
                         action='store_true')
+    parser.add_argument('--predict_images',
+                        type=str,
+                        dest='predict_images',
+                        default=None)
+    parser.add_argument('--load_model',
+                        type=str,
+                        dest='load_model',
+                        default=None)
 
     args = parser.parse_args()
     if args.train:
@@ -23,7 +31,7 @@ if __name__ == '__main__':
             Config.LOG_DIR.mkdir(parents=True)
         if not Config.CHECKPOINT_DIR.exists():
             Config.CHECKPOINT_DIR.mkdir(parents=True)
-        model = Model(DataSet())
+        model = Model(DataSet(), args.load_model)
         model.fit()
         model.eval()
     if args.adjust_data:
@@ -34,3 +42,7 @@ if __name__ == '__main__':
         if not Config.VIZ_RESULTS_DIR.exists():
             Config.VIZ_RESULTS_DIR.mkdir()
         Evaluation()
+    if args.predict_images is not None:
+        Config.MODE = 'predict_images'
+        model = Model(DataSet(), args.load_model)
+        predictions = model.predict(DataUtils.load_all_images(args.predict_images))
