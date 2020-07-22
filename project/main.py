@@ -5,6 +5,7 @@ from dataset import DataSet
 from model import Model
 from evaluation import Evaluation
 from config import Config
+import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -45,4 +46,12 @@ if __name__ == '__main__':
     if args.predict_images is not None:
         Config.MODE = 'predict_images'
         model = Model(DataSet(), args.load_model)
-        predictions = model.predict(DataUtils.load_all_images(args.predict_images))
+        images = DataUtils.load_all_images(args.predict_images)
+        predictions = model.predict(images)
+
+
+        for img, pred in zip(images, predictions):
+            plt.figure()
+            plt.imshow(img)
+            plt.title(pred)
+            plt.show()  
