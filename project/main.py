@@ -49,9 +49,8 @@ if __name__ == '__main__':
         images = DataUtils.load_all_images(args.predict_images)
         predictions = model.predict(images)
 
-
         for img, pred in zip(images, predictions):
-            plt.figure()
+            plt.figure(figsize=(20, 20))
             plt.imshow(img)
             plt.title(pred)
             plt.show()  
