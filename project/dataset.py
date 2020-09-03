@@ -1,4 +1,3 @@
-import itertools
 import sys
 from pathlib import Path
 
@@ -12,15 +11,48 @@ AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 
 class DataSet(object):
-    def __init__(self, data_dir=Config.DATA_DIR):
-        self.data_dir = data_dir
-        # Saves the categories of the labels
-        self.categories = dict()
-        # Does the data directory exist?
-        if not self.data_dir.exists():
-            sys.exit(
-                'No dataset for training found at the given data directory')
-        self._create()
+    def __init__(self):
+        self.one_hot_decoding = {
+            0: 'Men',
+            1: 'Women',
+            2: 'Bra',
+            3: 'Briefs',
+            4: 'Dresses',
+            5: 'Jackets',
+            6: 'Jumpsuit',
+            7: 'Kurtas',
+            8: 'Pants',
+            9: 'Shirts',
+            10: 'Shoes',
+            11: 'Shorts',
+            12: 'Skirts',
+            13: 'Socks',
+            14: 'Sweater',
+            15: 'Tops',
+            16: 'Tshirts',
+            17: 'Black',
+            18: 'Blue',
+            19: 'Brown',
+            20: 'Green',
+            21: 'Grey',
+            22: 'Orange',
+            23: 'Pink',
+            24: 'Purple',
+            25: 'Red',
+            26: 'White',
+            27: 'Yellow',
+            28: 'Fall',
+            29: 'Spring',
+            30: 'Summer',
+            31: 'Winter',
+            32: 'Casual',
+            33: 'Ethnic',
+            34: 'Formal',
+            35: 'Party',
+            36: 'Smart Casual',
+            37: 'Sports',
+            38: 'Travel'
+        }
 
     def _get_label(self, id):
         # Maps id to one hot encoded tensor. Acts on one sample at a time.
@@ -60,11 +92,18 @@ class DataSet(object):
         # model is training.
         return split.prefetch(buffer_size=AUTOTUNE)
 
-    def _create(self, splits=Config.DS_SPLIT):
+    def create(self, splits=Config.DS_SPLIT, data_dir=Config.DATA_DIR):
         # ds sizes:
         # test      4445
         # train    44199
         # val       4444
+        self.data_dir = data_dir
+        # Saves the categories of the labels
+        self.categories = dict()
+        # Does the data directory exist?
+        if not self.data_dir.exists():
+            sys.exit(
+                'No dataset for training found at the given data directory')
         Config.STYLES_USE_COLS.append('split')
         df = DataUtils.load_data_frame('adjusted_styles.csv')
         set_names = ['train', 'val', 'test']
@@ -74,9 +113,7 @@ class DataSet(object):
             df[col] = pd.Categorical(df[col])
             self.categories[col] = df[col].cat.categories
             df[col] = df[col].cat.codes
-        all_labels = list(itertools.chain(*self.categories.values()))
-        self.one_hot_decoding = dict(zip(range(len(all_labels)), all_labels))
-        print(self.one_hot_decoding)
+
         self.df = df
 
         for set_name, indices in list(zip(set_names, ids_by_split)):
@@ -84,3 +121,4 @@ class DataSet(object):
             ds = ds.map(self._process_id, num_parallel_calls=AUTOTUNE)
             ds = self._prepare_for_training(set_name, ds)
             setattr(self, set_name, ds)
+        return self

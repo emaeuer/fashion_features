@@ -1,4 +1,5 @@
-import subprocess, re
+import subprocess
+import re
 
 # Kundus to Yaroslav Bulatov, https://stackoverflow.com/questions/41634674/tensorflow-on-shared-gpus-how-to-automatically-select-the-one-that-is-unused
 # Nvidia-smi GPU memory parsing.
@@ -20,6 +21,7 @@ def list_available_gpus():
     result = []
     for line in output.strip().split("\n"):
         m = gpu_regex.match(line)
+        print(m)
         assert m, "Couldnt parse " + line
         result.append(int(m.group("gpu_id")))
     return result
@@ -33,7 +35,6 @@ def gpu_memory_map():
     # |    0      8734    C   python                                       11705MiB |
     memory_regex = re.compile(
         r"[|]\s+?(?P<gpu_id>\d+)\D+?(?P<pid>\d+).+[ ](?P<gpu_memory>\d+)MiB")
-    rows = gpu_output.split("\n")
     result = {gpu_id: 0 for gpu_id in list_available_gpus()}
     for row in gpu_output.split("\n"):
         m = memory_regex.search(row)
